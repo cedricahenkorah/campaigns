@@ -11,6 +11,7 @@ const Customers = () => {
   const [showModal, setShowModal] = useState(false);
   const { campaigns, dispatch } = useCampaignsContext();
   const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState(null);
 
   const [currentPage, setCurrentPage] = useState(1);
 
@@ -37,6 +38,11 @@ const Customers = () => {
         dispatch({ type: "GET_CAMPAIGNS", payload: json });
       }
 
+      if (!response.ok) {
+        setError(json.message);
+        setIsLoading(false);
+      }
+
       setIsLoading(false);
     };
 
@@ -47,7 +53,7 @@ const Customers = () => {
     <div className="min-h-screen bg-gray-100">
       <Navbar />
 
-      <div className="py-5 px-5 lg:px-20 xl:px-60">
+      <div className="py-5 px-5 md:px-10 lg:px-20 xl:px-60">
         <h1 className="text-base lg:text-lg font-semibold">Customers</h1>
         <p className="text-xs lg:text-sm text-gray-400">
           See all your customers in one place
@@ -151,25 +157,52 @@ const Customers = () => {
               <div className="flex justify-center py-5">
                 <Sentry size={50} color="green" />
               </div>
+            ) : error && !isLoading ? (
+              <>
+                <table className="w-full text-sm text-left text-gray-500 dark:text-gray-400">
+                  <thead className="text-xs text-black uppercase bg-gray-300 dark:bg-gray-700 dark:text-gray-400">
+                    <tr>
+                      <th scope="col" className="px-6 py-3 text-black">
+                        Campaign Title
+                      </th>
+                      <th scope="col" className="px-6 py-3">
+                        <div className="flex items-center">Description</div>
+                      </th>
+                      <th scope="col" className="px-6 py-3">
+                        <div className="flex items-center">Target Group</div>
+                      </th>
+                      <th scope="col" className="px-6 py-3">
+                        <div className="flex items-center">Campaign Status</div>
+                      </th>
+                    </tr>
+                  </thead>
+                </table>
+                <div className="flex justify-center py-5 text-green-800 font-semibold">
+                  {error}
+                </div>
+              </>
             ) : (
-              <table className="w-full text-sm text-left text-gray-500 dark:text-gray-400">
-                <thead className="text-xs text-black uppercase bg-gray-300 dark:bg-gray-700 dark:text-gray-400">
-                  <tr>
-                    <th scope="col" className="px-6 py-3 text-black">
-                      Campaign Title
-                    </th>
-                    <th scope="col" className="px-6 py-3">
-                      <div className="flex items-center">Description</div>
-                    </th>
-                    <th scope="col" className="px-6 py-3">
-                      <div className="flex items-center">Target Group</div>
-                    </th>
-                    <th scope="col" className="px-6 py-3">
-                      <div className="flex items-center">Campaign Status</div>
-                    </th>
-                  </tr>
-                </thead>
-              </table>
+              !isLoading &&
+              !error && (
+                <table className="w-full text-sm text-left text-gray-500 dark:text-gray-400">
+                  <thead className="text-xs text-black uppercase bg-gray-300 dark:bg-gray-700 dark:text-gray-400">
+                    <tr>
+                      <th scope="col" className="px-6 py-3 text-black">
+                        Campaign Title
+                      </th>
+                      <th scope="col" className="px-6 py-3">
+                        <div className="flex items-center">Description</div>
+                      </th>
+                      <th scope="col" className="px-6 py-3">
+                        <div className="flex items-center">Target Group</div>
+                      </th>
+                      <th scope="col" className="px-6 py-3">
+                        <div className="flex items-center">Campaign Status</div>
+                      </th>
+                    </tr>
+                  </thead>
+                </table>
+              )
             )}
           </div>
         </div>

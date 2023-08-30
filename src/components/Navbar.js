@@ -4,7 +4,7 @@ import { RiArrowDropDownLine } from "react-icons/ri";
 
 const Navbar = () => {
   return (
-    <nav className="w-full flex justify-between items-center px-5 lg:px-20 xl:px-60 py-5 bg-white">
+    <nav className="w-full flex justify-between items-center px-5 md:px-10 lg:px-20 xl:px-60 py-5 bg-white">
       <div className="flex items-center gap-x-2">
         <img src="/assets/logo.png" alt="icon" />
         <img src="/assets/name.png" alt="logo" />
