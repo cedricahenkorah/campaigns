@@ -23,7 +23,7 @@ export const campaignsReducer = (state, action) => {
 
 export const CampaignsContextProvider = ({ children }) => {
   const [state, dispatch] = useReducer(campaignsReducer, {
-    campaigns: null,
+    campaigns: [],
   });
 
   return (
