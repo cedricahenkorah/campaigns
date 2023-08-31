@@ -15,13 +15,21 @@ const Customers = () => {
 
   const [currentPage, setCurrentPage] = useState(1);
 
+  const [searchTerm, setSearchTerm] = useState("");
+
   const itemsPerPage = 10;
   const totalItems = campaigns?.length;
   const totalPages = Math.ceil(totalItems / itemsPerPage);
 
   const startIndex = (currentPage - 1) * itemsPerPage;
   const endIndex = startIndex + itemsPerPage;
-  const itemsToShow = campaigns?.slice(startIndex, endIndex);
+
+  const filteredCampaigns = campaigns?.filter((campaign) =>
+    campaign?.title?.toLowerCase().includes(searchTerm.toLowerCase())
+  );
+
+  // const itemsToShow = campaigns?.slice(startIndex, endIndex);
+  const itemsToShow = filteredCampaigns?.slice(startIndex, endIndex);
 
   useEffect(() => {
     const fetchCampaigns = async (e) => {
@@ -90,8 +98,9 @@ const Customers = () => {
               <input
                 type="search"
                 className="block w-full p-2 pl-8 lg:pl-10 bg-inherit border-b-2 border-x-0 focus:ring-0 border-t-0 border-white focus:outline-none focus:border-white text-black font-light placeholder-gray-400 bg-white rounded-lg placeholder:text-xs"
-                placeholder="Search customer log by customer name, email address & phone number"
-                required
+                placeholder="Search by campaign title"
+                value={searchTerm}
+                onChange={(e) => setSearchTerm(e.target.value)}
               />
             </div>
 
@@ -117,7 +126,9 @@ const Customers = () => {
         {/* table */}
         <div className="pb-5">
           <div className="relative overflow-x-auto shadow-md sm:rounded-lg">
-            {campaigns && !isLoading && campaigns?.length > 0 ? (
+            {filteredCampaigns &&
+            !isLoading &&
+            filteredCampaigns?.length > 0 ? (
               <table className="w-full text-sm text-left text-gray-500 dark:text-gray-400">
                 <thead className="text-xs text-black uppercase bg-gray-300 dark:bg-gray-700 dark:text-gray-400">
                   <tr>
